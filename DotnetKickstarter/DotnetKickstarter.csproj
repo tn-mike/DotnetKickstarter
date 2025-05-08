@@ -8,10 +8,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\CICD\" />
-    <Folder Include="Infrastructure\Templates\net7\" />
-    <Folder Include="Infrastructure\Templates\net8\" />
-    <Folder Include="Infrastructure\Templates\net9\" />
+    <None Remove="Infrastructure\Templates\Class\HealthCheckResponseWriter.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Infrastructure\Templates\Class\MainDTO.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Infrastructure\Templates\Class\HealthCheckResponseWriter.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\Templates\CICD\" />
+    <Folder Include="Infrastructure\Templates\CICD\net7\" />
+    <Folder Include="Infrastructure\Templates\CICD\net8\" />
+    <Folder Include="Infrastructure\Templates\CICD\net9\" />
   </ItemGroup>
 
   <ItemGroup>

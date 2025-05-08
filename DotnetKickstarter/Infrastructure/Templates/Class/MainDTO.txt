@@ -1,0 +1,25 @@
+﻿namespace DotnetKickstarter.Infrastructure.Templates.Class
+{
+    public class ResponseDTO<T>
+    {
+        public int status { get; set; } = 500;
+        public bool success { get; set; } = false;
+        public string message { get; set; } = string.Empty;
+        public object error { get; set; } = new object();
+
+        public T data { get; set; }
+    }
+}
+
+// ** Use this code in your Program.cs **
+//builder.Services.AddControllers();
+//builder.Services.AddHealthChecks();
+//app.UseRouting();
+//app.UseAuthentication();
+//app.UseAuthorization();
+//app.MapControllers();
+//app.MapHealthChecks("/healthz", new HealthCheckOptions
+//{
+//    ResponseWriter = HealthCheckResponseWriter.WriteResponse
+//});
+// ** ******************************** **

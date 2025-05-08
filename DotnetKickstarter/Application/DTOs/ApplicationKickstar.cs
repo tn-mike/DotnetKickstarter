@@ -16,5 +16,8 @@ namespace DotnetKickstarter.Application.DTOs
     {
         public string jenkinsAppName { get; set; } = string.Empty;
         public string jenkinsAppPath { get; set; } = string.Empty;
+        public string solutionPath { get; set; } = string.Empty;
+        public string srcPath { get; set; } = string.Empty;
+        public string testPath { get; set; } = string.Empty;
     }
 }

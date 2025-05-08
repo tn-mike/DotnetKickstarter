@@ -14,12 +14,17 @@ namespace DotnetKickstarter
             .ConfigureServices((context, services) =>
             {
                 services.AddTransient<IMapData, MapData>();
+                services.AddTransient<IStructureFile, StructureFile>();
                 services.AddTransient<IProcessService, ProcessService>();
             })
             .Build();
 
             var generator = host.Services.GetRequiredService<IProcessService>();
-            generator.Run();
+            var result = generator.Run();
+
+            Console.WriteLine(result);
+            //Console.WriteLine("Enter to exit...");
+            //Console.ReadLine();
 
             host.RunAsync();
         }
