@@ -8,17 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Infrastructure\Templates\Class\HealthCheckResponseWriter.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Content Include="Infrastructure\Templates\Class\DependencyInjection.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Infrastructure\Templates\Class\MainDTO.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Infrastructure\Templates\Class\HealthCheckResponseWriter.txt">
+    <Content Include="Infrastructure\Templates\Class\HealthCheckExtenstion.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

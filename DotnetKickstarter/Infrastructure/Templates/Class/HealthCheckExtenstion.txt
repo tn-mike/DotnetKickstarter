@@ -4,9 +4,9 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace DotnetKickstarter.Infrastructure.Templates.Class
+namespace {{NAMESPACE}}
 {
-    public static class HealthCheckResponseWriter
+    public static class HealthCheckExtenstion
     {
         public static Task WriteResponse(HttpContext context, HealthReport report)
         {

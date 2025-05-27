@@ -29,7 +29,8 @@ namespace DotnetKickstarter.Infrastructure.Utility
                 AddFoldersToCsproj(csprojPath, folders);
 
                 CopyAndModifyMainDTO(input.solutionName, input.srcPath, input.isCleanArchitecture);
-                CopyAndModifyHealthCheckResponseWriter(input.solutionName, input.srcPath, input.isCleanArchitecture);
+                CopyAndModifyDependencyInjection(input.solutionName, input.srcPath, input.isCleanArchitecture);
+                CopyAndModifyHealthCheckExtenstion(input.solutionName, input.srcPath, input.isCleanArchitecture);
             }
 			catch (Exception ex)
 			{
@@ -42,16 +43,18 @@ namespace DotnetKickstarter.Infrastructure.Utility
             string[] folders = new[]
             {
                 "Domain/Entities",
-                "Domain/Validators",
                 "Application/DTOs",
                 "Application/Interfaces",
                 "Application/Services",
+                "Application/Validators",
                 "Application/DependencyInjection",
                 "Infrastructure/Persistence",
                 "Infrastructure/Services",
+                "Infrastructure/Logging",
                 "Infrastructure/DependencyInjection",
                 "Presentation/Controllers",
                 "Presentation/Extensions",
+                "Presentation/Middleware",
                 "Presentation/DependencyInjection"
             };
 
@@ -140,11 +143,52 @@ namespace DotnetKickstarter.Infrastructure.Utility
             Console.WriteLine($"File copied and modified: {destinationPath}");
         }
 
-        private void CopyAndModifyHealthCheckResponseWriter(string solutionName, string srcPath, bool isCleanArchitecture)
+        private void CopyAndModifyDependencyInjection(string solutionName, string srcPath, bool isCleanArchitecture)
         {
+            if (!isCleanArchitecture)
+            {
+                return;
+            }
+
             string executableLocation = Assembly.GetExecutingAssembly().Location;
             string executableDirectory = Path.GetDirectoryName(executableLocation);
-            string sourceFilePath = "Infrastructure\\Templates\\Class\\HealthCheckResponseWriter.txt";
+            string sourceFilePath = "Infrastructure\\Templates\\Class\\DependencyInjection.txt";
+            sourceFilePath = Path.Combine(executableDirectory, sourceFilePath);
+
+            if (!File.Exists(sourceFilePath))
+            {
+                Console.WriteLine($"Source file not found: {sourceFilePath}");
+                return;
+            }
+
+
+            Dictionary<string, string> listLayer = new Dictionary<string, string>();
+            listLayer.Add("Application", "AddApplication");
+            listLayer.Add("Infrastructure", "AddInfrastructure");
+            listLayer.Add("Presentation", "AddPresentation");
+
+            foreach (var item in listLayer)
+            {
+                string fileContent = File.ReadAllText(sourceFilePath);
+                string newNamespace = $"{solutionName}.{item.Key}";
+                fileContent = fileContent.Replace("{{NAMESPACE}}", newNamespace);
+                fileContent = fileContent.Replace("{{NAMESMETHOD}}", item.Value);
+                string destinationPath = Path.Combine(srcPath, item.Key, "DependencyInjection.cs");
+
+                //Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
+
+                File.WriteAllText(destinationPath, fileContent);
+                Console.WriteLine($"File copied and modified: {destinationPath}");
+            }
+
+        }
+
+        private void CopyAndModifyHealthCheckExtenstion(string solutionName, string srcPath, bool isCleanArchitecture)
+        {
+            string fileName = "HealthCheckExtenstion";
+            string executableLocation = Assembly.GetExecutingAssembly().Location;
+            string executableDirectory = Path.GetDirectoryName(executableLocation);
+            string sourceFilePath = $"Infrastructure\\Templates\\Class\\{fileName}.txt";
             sourceFilePath = Path.Combine(executableDirectory, sourceFilePath);
 
             if (!File.Exists(sourceFilePath))
@@ -161,8 +205,8 @@ namespace DotnetKickstarter.Infrastructure.Utility
             fileContent = fileContent.Replace("{{NAMESPACE}}", newNamespace);
 
             string destinationPath = isCleanArchitecture
-                ? Path.Combine(srcPath, "Presentation/Extensions", "HealthCheckResponseWriter.cs")
-                : Path.Combine(srcPath, "APIHelper", "HealthCheckResponseWriter.cs");
+                ? Path.Combine(srcPath, "Presentation/Extensions", $"{fileName}.cs")
+                : Path.Combine(srcPath, "APIHelper", $"{fileName}.cs");
 
             Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
 
